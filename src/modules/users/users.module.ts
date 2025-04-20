@@ -23,8 +23,6 @@ import {
   AdminMongo,
   AdminSchema,
 } from 'src/infrastructure/mongo/users/schemas/admin.schema';
-import { Master } from 'src/core/users/entities/master.entity';
-import { MongoService } from 'src/infrastructure/mongo/users/strategies';
 
 @Module({
   imports: [
@@ -36,7 +34,6 @@ import { MongoService } from 'src/infrastructure/mongo/users/strategies';
     ]),
   ],
   providers: [
-    MongoService,
     UsersService,
     UserRoleFactory,
     AdminUserCreator,

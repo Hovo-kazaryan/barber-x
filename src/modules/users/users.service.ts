@@ -1,24 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { USER_ROLES } from 'src/shared/constants';
+import { USER_REPOSITORY_MONGO } from 'src/shared/tokens';
 import { CreateUserDto } from 'src/core/users/dto/create-user.dto';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
-import { MongoService } from 'src/infrastructure/mongo/users/strategies';
-import { USER_ROLES } from 'src/shared/constants';
+import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(MongoService)
-    private readonly mongoService: MongoService,
+    @Inject(USER_REPOSITORY_MONGO)
+    private readonly service: IUserRepository,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<AbstractUser> {
-    return await this.mongoService.create(createUserDto);
+    return await this.service.create(createUserDto);
   }
 
   async getUserByEmailAndRole(
     email: string,
     role: USER_ROLES,
   ): Promise<AbstractUser> {
-    return await this.mongoService.getByEmail(email, role);
+    return await this.service.getByEmail(email, role);
   }
 }

@@ -7,6 +7,8 @@ import { Planner, PlannerDocument } from './schemas/planner.schema';
 import { UserRoleFactory } from './strategies/user-role.factory';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
+import { CreateUserDto } from 'src/core/users/dto/create-user.dto';
+import { USER_ROLES } from 'src/shared/constants';
 
 @Injectable()
 export class MongoUserRepository implements IUserRepository {
@@ -23,8 +25,13 @@ export class MongoUserRepository implements IUserRepository {
     return null;
   }
 
-  async create(user: AbstractUser): Promise<AbstractUser> {
-    const creator = this.userRoleFactory.getCreator(user.role);
-    return await creator.create(user);
+  async create(createUserDto: CreateUserDto): Promise<AbstractUser> {
+    const creator = this.userRoleFactory.getCreator(createUserDto.role);
+    return creator.create(createUserDto);
+  }
+
+  async getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
+    const entity = this.userRoleFactory.getCreator(role);
+    return await entity.getByEmail(email);
   }
 }
