@@ -16,8 +16,8 @@ import {
   MasterMongo,
   MasterSchema,
 } from 'src/infrastructure/mongo/users/schemas/master.schema';
-import { ClientUserCreator } from 'src/infrastructure/mongo/users/strategies/client-user.service';
 import { UserRoleFactory } from 'src/infrastructure/mongo/users/strategies/user-role.factory';
+import { ClientUserCreator } from 'src/infrastructure/mongo/users/strategies/client-user.service';
 import { MasterUserCreator } from 'src/infrastructure/mongo/users/strategies/master-user.service';
 import {
   AdminMongo,
@@ -45,5 +45,6 @@ import {
     },
   ],
   controllers: [UsersController],
+  exports: [USER_REPOSITORY_MONGO],
 })
 export class UsersModule {}

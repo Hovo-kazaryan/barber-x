@@ -1,14 +1,11 @@
-import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { UserDocument, UserMongo } from './schemas/user.schema';
-import { Planner, PlannerDocument } from './schemas/planner.schema';
 
 import { UserRoleFactory } from './strategies/user-role.factory';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 import { CreateUserDto } from 'src/core/users/dto/create-user.dto';
 import { USER_ROLES } from 'src/shared/constants';
+import { JwtPayload } from 'src/infrastructure/auth/strategies/payload.types';
 
 @Injectable()
 export class MongoUserRepository implements IUserRepository {
@@ -33,5 +30,13 @@ export class MongoUserRepository implements IUserRepository {
   async getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
     const entity = this.userRoleFactory.getCreator(role);
     return await entity.getByEmail(email);
+  }
+
+  async validateUser(payload: JwtPayload): Promise<boolean> {
+    const entity = await this.getByEmail(payload.email, payload.role);
+    if (entity) {
+      return true;
+    }
+    return false;
   }
 }
