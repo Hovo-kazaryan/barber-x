@@ -14,7 +14,7 @@ import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
 
 @Injectable()
-export class MasterUserCreator implements UserCreationStrategy {
+export class MasterUserStrategy implements UserCreationStrategy {
   constructor(
     @InjectModel(MasterMongo.name)
     private masterModel: Model<MasterMongo>,
@@ -29,7 +29,7 @@ export class MasterUserCreator implements UserCreationStrategy {
 
     if (checkIsExists) {
       throw new UnprocessableEntityException({
-        email: ERROR_MESSAGES.ERROR_EMAIL_IN_USE,
+        email: ERROR_MESSAGES.EMAIL_IN_USE,
       });
     }
     const master = await this.masterModel.create(payload);

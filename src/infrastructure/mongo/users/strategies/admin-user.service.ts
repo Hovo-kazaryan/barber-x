@@ -13,7 +13,7 @@ import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
 
 @Injectable()
-export class AdminUserCreator implements UserCreationStrategy {
+export class AdminUserStrategy implements UserCreationStrategy {
   constructor(
     @InjectModel(AdminMongo.name) private adminModel: Model<AdminMongo>,
   ) {}
@@ -25,7 +25,7 @@ export class AdminUserCreator implements UserCreationStrategy {
 
     if (checkIsExists) {
       throw new UnprocessableEntityException({
-        email: ERROR_MESSAGES.ERROR_EMAIL_IN_USE,
+        email: ERROR_MESSAGES.EMAIL_IN_USE,
       });
     }
 

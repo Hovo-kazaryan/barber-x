@@ -15,3 +15,7 @@ export abstract class AbstractUser {
   };
   role: USER_ROLES;
 }
+
+export interface AuthenticatedUser extends AbstractUser {
+  accessToken: string;
+}

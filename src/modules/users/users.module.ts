@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { getModelToken, MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
@@ -11,14 +11,14 @@ import {
 } from 'src/infrastructure/mongo/users/schemas/user.schema';
 import { Planner } from 'src/core/planner/entities/planner.entity';
 import { PlannerSchema } from 'src/infrastructure/mongo/users/schemas/planner.schema';
-import { AdminUserCreator } from 'src/infrastructure/mongo/users/strategies/admin-user.service';
+import { AdminUserStrategy } from 'src/infrastructure/mongo/users/strategies/admin-user.service';
 import {
   MasterMongo,
   MasterSchema,
 } from 'src/infrastructure/mongo/users/schemas/master.schema';
 import { UserRoleFactory } from 'src/infrastructure/mongo/users/strategies/user-role.factory';
-import { ClientUserCreator } from 'src/infrastructure/mongo/users/strategies/client-user.service';
-import { MasterUserCreator } from 'src/infrastructure/mongo/users/strategies/master-user.service';
+import { ClientUserStrategy } from 'src/infrastructure/mongo/users/strategies/client-user.service';
+import { MasterUserStrategy } from 'src/infrastructure/mongo/users/strategies/master-user.service';
 import {
   AdminMongo,
   AdminSchema,
@@ -36,11 +36,11 @@ import {
   providers: [
     UsersService,
     UserRoleFactory,
-    AdminUserCreator,
-    MasterUserCreator,
-    ClientUserCreator,
+    AdminUserStrategy,
+    MasterUserStrategy,
+    ClientUserStrategy,
     {
-      provide: USER_REPOSITORY_MONGO, // key point: provide interface token
+      provide: USER_REPOSITORY_MONGO,
       useClass: MongoUserRepository,
     },
   ],
