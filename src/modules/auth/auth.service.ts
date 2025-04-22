@@ -13,13 +13,11 @@ import { IAuthRepository } from 'src/core/auth/interfaces/auth-repository.interf
 @Injectable()
 export class AuthService implements IAuthRepository {
   constructor(
-    @Inject(USER_REPOSITORY_MONGO)
-    private readonly userService: IAuthRepository,
     @Inject(AUTH_REPOSITORY_MONGO)
     private readonly authService: IAuthRepository,
   ) {}
   validateUser(payload: JwtPayload): Promise<boolean> {
-    return this.userService.validateUser(payload);
+    return this.authService.validateUser?.(payload);
   }
 
   login(payload: LoginPayload): Promise<AuthenticatedUser> {
