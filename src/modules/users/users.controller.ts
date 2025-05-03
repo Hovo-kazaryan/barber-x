@@ -1,7 +1,9 @@
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { UsersService } from './users.service';
 import { USER_ROLES } from 'src/shared/constants';
+import { Public } from 'src/shared/decorators/public.decorator';
 import { CreateUserDto } from 'src/core/users/dto/create-user.dto';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 
@@ -25,5 +27,11 @@ export class UsersController {
     @Param('role') role: USER_ROLES,
   ): Promise<AbstractUser | null> {
     return this.usersService.getUserByEmailAndRole(email, role);
+  }
+
+  @Public()
+  @EventPattern('user')
+  userGet(@Payload() payload: any) {
+    console.log('payload', payload);
   }
 }
