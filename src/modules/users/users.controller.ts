@@ -1,4 +1,4 @@
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { UsersService } from './users.service';
@@ -11,10 +11,10 @@ import { AbstractUser } from 'src/core/users/entities/user.abstract';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() body: CreateUserDto): Promise<AbstractUser> {
-    return this.usersService.create(body);
-  }
+  // @Post()
+  // create(@Body() body: CreateUserDto): Promise<AbstractUser> {
+  //   return this.usersService.create(body);
+  // }
 
   @Get()
   getUsers(): string {
@@ -30,8 +30,8 @@ export class UsersController {
   }
 
   @Public()
-  @EventPattern('user')
-  userGet(@Payload() payload: any) {
-    console.log('payload', payload);
+  @MessagePattern('user_created')
+  handleUserCreated(@Payload() data: any) {
+    return this.usersService.create(data);
   }
 }

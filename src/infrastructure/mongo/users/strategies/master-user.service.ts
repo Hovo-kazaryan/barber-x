@@ -12,6 +12,7 @@ import { MasterMongo } from '../schemas/master.schema';
 import { UserCreationStrategy } from './user-creation.strategy';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class MasterUserStrategy implements UserCreationStrategy {
@@ -28,7 +29,7 @@ export class MasterUserStrategy implements UserCreationStrategy {
     });
 
     if (checkIsExists) {
-      throw new UnprocessableEntityException({
+      throw new RpcException({
         email: ERROR_MESSAGES.EMAIL_IN_USE,
       });
     }

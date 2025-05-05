@@ -8,7 +8,6 @@ import { AppController } from './app.controller';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './infrastructure/shared/auth/guards/jwt-auth.guard';
-import { KafkaModule } from './modules/kafka/kafka.module';
 
 @Module({
   imports: [
@@ -24,7 +23,6 @@ import { KafkaModule } from './modules/kafka/kafka.module';
     }),
     UsersModule,
     AuthModule,
-    KafkaModule,
   ],
   controllers: [AppController],
   providers: [
