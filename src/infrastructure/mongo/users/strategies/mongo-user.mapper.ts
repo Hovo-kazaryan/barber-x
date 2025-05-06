@@ -1,10 +1,10 @@
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
-import { UserMongo } from '../schemas/user.schema';
 import { Types } from 'mongoose';
 import { AdminMongo } from '../schemas/admin.schema';
 import { MasterMongo } from '../schemas/master.schema';
+import { ClientMongo } from '../schemas/client.schema';
 
-type MongoUserLike = (UserMongo | AdminMongo | MasterMongo) & {
+type MongoUserLike = (ClientMongo | AdminMongo | MasterMongo) & {
   _id?: Types.ObjectId | string;
 };
 

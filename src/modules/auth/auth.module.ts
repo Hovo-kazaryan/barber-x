@@ -9,10 +9,12 @@ import { UsersModule } from '../users/users.module';
 import { AUTH_REPOSITORY_MONGO } from 'src/shared/tokens';
 import { MongoAuthRepo } from 'src/infrastructure/mongo/auth/auth.repository';
 import { JwtStrategy } from 'src/infrastructure/shared/auth/strategies/jwt.strategy';
+import { UserModuleMongo } from 'src/infrastructure/mongo/users/users.mongo.module';
 
 @Module({
   imports: [
     UsersModule,
+    UserModuleMongo,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

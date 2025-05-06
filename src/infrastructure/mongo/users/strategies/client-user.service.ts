@@ -6,17 +6,17 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 
-import { UserMongo } from '../schemas/user.schema';
 import { ERROR_MESSAGES } from 'src/shared/messages';
-import { Client } from 'src/core/users/entities/client.entity';
-import { UserCreationStrategy } from './user-creation.strategy';
-import { AbstractUser } from 'src/core/users/entities/user.abstract';
+import { ClientMongo } from '../schemas/client.schema';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
+import { Client } from 'src/core/users/entities/client.entity';
+import { AbstractUser } from 'src/core/users/entities/user.abstract';
+import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 
 @Injectable()
-export class ClientUserStrategy implements UserCreationStrategy {
+export class ClientUserStrategy implements IUserRepository {
   constructor(
-    @InjectModel(UserMongo.name) private userModel: Model<UserMongo>,
+    @InjectModel(ClientMongo.name) private userModel: Model<ClientMongo>,
   ) {}
 
   async create(payload: Client): Promise<any> {
@@ -49,5 +49,9 @@ export class ClientUserStrategy implements UserCreationStrategy {
       throw new NotFoundException('User is not found');
     }
     return mapMongoToAbstractUser(user);
+  }
+
+  delete(id: string): Promise<boolean> {
+    return null;
   }
 }

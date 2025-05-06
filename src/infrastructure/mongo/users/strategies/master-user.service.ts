@@ -1,21 +1,17 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Planner } from '../schemas/planner.schema';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { MasterMongo } from '../schemas/master.schema';
-import { UserCreationStrategy } from './user-creation.strategy';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
-import { RpcException } from '@nestjs/microservices';
+import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 
 @Injectable()
-export class MasterUserStrategy implements UserCreationStrategy {
+export class MasterUserStrategy implements IUserRepository {
   constructor(
     @InjectModel(MasterMongo.name)
     private masterModel: Model<MasterMongo>,
@@ -59,5 +55,9 @@ export class MasterUserStrategy implements UserCreationStrategy {
     }
 
     return mapMongoToAbstractUser(master);
+  }
+
+  delete(id: string): Promise<boolean> {
+    return null;
   }
 }

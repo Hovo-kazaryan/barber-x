@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserCreationStrategy } from './user-creation.strategy';
+
 import {
   Injectable,
   NotFoundException,
@@ -11,9 +11,10 @@ import { Admin } from 'src/core/users/entities/admin.entity';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { mapMongoToAbstractUser } from './mongo-user.mapper';
+import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 
 @Injectable()
-export class AdminUserStrategy implements UserCreationStrategy {
+export class AdminUserStrategy implements IUserRepository {
   constructor(
     @InjectModel(AdminMongo.name) private adminModel: Model<AdminMongo>,
   ) {}
@@ -48,5 +49,9 @@ export class AdminUserStrategy implements UserCreationStrategy {
     }
 
     return mapMongoToAbstractUser(admin);
+  }
+
+  delete(id: string): Promise<boolean> {
+    return null;
   }
 }
