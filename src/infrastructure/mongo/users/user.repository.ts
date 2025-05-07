@@ -8,18 +8,18 @@ import { IUserRepository } from 'src/core/users/interfaces/user-repository.inter
 
 @Injectable()
 export class MongoUserRepository implements IUserRepository {
-  constructor(private readonly userRoleFactory: MongoUserRoleFactory) {}
+  constructor(private readonly roleFactory: MongoUserRoleFactory) {}
   delete(id: string): Promise<boolean> {
     return null;
   }
 
   async create(createUserDto: CreateUserDto): Promise<AbstractUser> {
-    const strategy = this.userRoleFactory.getStrategy(createUserDto.role);
+    const strategy = this.roleFactory.getStrategy(createUserDto.role);
     return strategy.create(createUserDto);
   }
 
   async getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
-    const strategy = this.userRoleFactory.getStrategy(role);
+    const strategy = this.roleFactory.getStrategy(role);
     return await strategy.getByEmail(email, role);
   }
 }

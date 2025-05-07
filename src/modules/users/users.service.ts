@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
 import { USER_ROLES } from 'src/shared/constants';
-import { USER_REPOSITORY_MONGO } from 'src/shared/tokens';
+import { USER_REPOSITORY_SQL } from 'src/shared/tokens';
 import { CreateUserDto } from 'src/core/users/dto/create-user.dto';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
@@ -9,7 +9,7 @@ import { IUserRepository } from 'src/core/users/interfaces/user-repository.inter
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject(USER_REPOSITORY_MONGO)
+    @Inject(USER_REPOSITORY_SQL)
     private readonly service: IUserRepository,
   ) {}
 

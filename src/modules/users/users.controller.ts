@@ -11,11 +11,6 @@ import { AbstractUser } from 'src/core/users/entities/user.abstract';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @Post()
-  // create(@Body() body: CreateUserDto): Promise<AbstractUser> {
-  //   return this.usersService.create(body);
-  // }
-
   @Get()
   getUsers(): string {
     return 'Hello from user';

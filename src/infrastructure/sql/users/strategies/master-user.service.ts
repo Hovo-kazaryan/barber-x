@@ -1,9 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RpcException } from '@nestjs/microservices';
 
 import { MasterSQL } from '../schemas/master.orm.entity';
 
-import { USER_ROLES } from 'src/shared/constants';
+import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 
@@ -13,15 +14,34 @@ export class MasterSQLService implements IUserRepository {
     private readonly masterRepo: Repository<MasterSQL>,
   ) {}
 
-  create(user: AbstractUser): Promise<AbstractUser> {
-    return null;
+  async create(user: AbstractUser): Promise<AbstractUser> {
+    const isExists = await this.masterRepo.findOne({
+      where: { email: user.email },
+    });
+
+    if (isExists) {
+      throw new RpcException({
+        statusCode: 422,
+        email: ERROR_MESSAGES.EMAIL_IN_USE,
+      });
+    }
+
+    const master = this.masterRepo.create(user);
+    return await this.masterRepo.save(master);
   }
 
   delete(id: string): Promise<boolean> {
     return null;
   }
 
-  getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
-    return null;
+  async getByEmail(email: string): Promise<AbstractUser> {
+    const master = await this.masterRepo.findOne({ where: { email } });
+    if (!master) {
+      throw new RpcException({
+        statusCode: 404,
+        message: ERROR_MESSAGES.NOT_FOUND,
+      });
+    }
+    return master;
   }
 }
