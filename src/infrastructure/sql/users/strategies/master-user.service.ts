@@ -7,6 +7,7 @@ import { MasterSQL } from '../schemas/master.orm.entity';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class MasterSQLService implements IUserRepository {
   constructor(
@@ -21,8 +22,10 @@ export class MasterSQLService implements IUserRepository {
 
     if (isExists) {
       throw new RpcException({
-        statusCode: 422,
-        email: ERROR_MESSAGES.EMAIL_IN_USE,
+        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        fields: {
+          email: ERROR_MESSAGES.EMAIL_IN_USE,
+        },
       });
     }
 

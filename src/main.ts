@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 
-import { AppModule } from './app.module';
+import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -40,6 +40,7 @@ async function bootstrap() {
   );
 
   app.enableShutdownHooks();
+
   await app.listen();
   stopCommand();
 }

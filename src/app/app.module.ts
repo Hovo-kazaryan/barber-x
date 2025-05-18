@@ -4,11 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { AppService } from './app.service';
+import { UsersModule } from '../modules/users/users.module';
+import { AuthModule } from '../modules/auth/auth.module';
+import { JwtAuthGuard } from '../infrastructure/shared/auth/guards/jwt-auth.guard';
 import { AppController } from './app.controller';
-import { UsersModule } from './modules/users/users.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { JwtAuthGuard } from './infrastructure/shared/auth/guards/jwt-auth.guard';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
