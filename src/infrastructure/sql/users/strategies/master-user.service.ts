@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { HttpStatus, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 
@@ -7,12 +8,14 @@ import { MasterSQL } from '../schemas/master.orm.entity';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { RolesRepository } from '../../roles/roles.repository';
 
 export class MasterSQLService implements IUserRepository {
   constructor(
     @InjectRepository(MasterSQL)
     private readonly masterRepo: Repository<MasterSQL>,
+
+    private readonly roleRepository: RolesRepository,
   ) {}
 
   async create(user: AbstractUser): Promise<AbstractUser> {
@@ -29,8 +32,11 @@ export class MasterSQLService implements IUserRepository {
       });
     }
 
-    const master = this.masterRepo.create(user);
-    return await this.masterRepo.save(master);
+    const role = await this.roleRepository.getRoleByName(user.role);
+    const master = this.masterRepo.create({ ...user, role });
+    await this.masterRepo.save(master);
+
+    return { ...master, role: role.name };
   }
 
   delete(id: string): Promise<boolean> {
@@ -45,6 +51,9 @@ export class MasterSQLService implements IUserRepository {
         message: ERROR_MESSAGES.NOT_FOUND,
       });
     }
-    return master;
+
+    const role = await this.roleRepository.getRoleById(email);
+
+    return { ...master, role: role.name };
   }
 }

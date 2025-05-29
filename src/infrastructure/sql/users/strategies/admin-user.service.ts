@@ -1,4 +1,5 @@
 import { Repository } from 'typeorm';
+import { HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 
@@ -7,11 +8,13 @@ import { USER_ROLES } from 'src/shared/constants';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
+import { RolesRepository } from '../../roles/roles.repository';
 
 export class AdminSQLService implements IUserRepository {
   constructor(
     @InjectRepository(AdminSQL)
     private readonly adminRepo: Repository<AdminSQL>,
+    private readonly roleRepository: RolesRepository,
   ) {}
 
   async create(user: AbstractUser): Promise<AbstractUser> {
@@ -21,12 +24,16 @@ export class AdminSQLService implements IUserRepository {
 
     if (isExists) {
       throw new RpcException({
-        email: ERROR_MESSAGES.EMAIL_IN_USE,
+        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        fields: {
+          email: ERROR_MESSAGES.EMAIL_IN_USE,
+        },
       });
     }
-
-    const master = this.adminRepo.create(user);
-    return await this.adminRepo.save(master);
+    const role = await this.roleRepository.getRoleByName(user.role);
+    const master = this.adminRepo.create({ ...user, role });
+    await this.adminRepo.save(master);
+    return { ...master, role: role.name };
   }
 
   delete(id: string): Promise<boolean> {

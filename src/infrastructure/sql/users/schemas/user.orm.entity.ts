@@ -2,9 +2,12 @@ import { USER_ROLES } from 'src/shared/constants';
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
   TableInheritance,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
+import { RoleSQL } from '../../roles/schemas/roles.orm';
 
 @Entity('users')
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
@@ -30,12 +33,9 @@ export class UserSQL {
   @Column({ type: 'float', nullable: true })
   rating?: number;
 
-  @Column({
-    type: 'enum',
-    enum: USER_ROLES,
-    default: USER_ROLES.CLIENT,
-  })
-  role: USER_ROLES;
+  @ManyToOne(() => RoleSQL, { eager: true })
+  @JoinColumn({ name: 'role' })
+  role: RoleSQL;
 
   @Column({
     type: 'json',
