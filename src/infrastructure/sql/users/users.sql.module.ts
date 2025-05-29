@@ -12,7 +12,6 @@ import { SQLUserRoleFactory } from './strategies/role-factory';
 import { AdminSQLService } from './strategies/admin-user.service';
 import { ClientSQLService } from './strategies/client-user.service';
 import { MasterSQLService } from './strategies/master-user.service';
-import { RoleSQL } from '../roles/schemas/roles.orm';
 import { RolesSQLModule } from '../roles/roles.sql.module';
 @Module({
   imports: [

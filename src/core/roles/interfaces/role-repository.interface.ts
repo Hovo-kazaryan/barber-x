@@ -1,5 +1,4 @@
 import { USER_ROLES } from 'src/shared/constants';
-import { RoleEntity } from '../entities/role.entity';
 import { RoleSQL } from 'src/infrastructure/sql/roles/schemas/roles.orm';
 
 export interface IRoleRepository {

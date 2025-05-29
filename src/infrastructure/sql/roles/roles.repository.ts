@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { RoleSQL } from './schemas/roles.orm';
 import { USER_ROLES } from 'src/shared/constants';
 import { ERROR_MESSAGES } from 'src/shared/messages';
-import { RoleEntity } from 'src/core/roles/entities/role.entity';
 import { IRoleRepository } from 'src/core/roles/interfaces/role-repository.interface';
 
 @Injectable()
