@@ -15,12 +15,12 @@ export class UsersController {
     return 'Hello from user';
   }
 
-  @Get('by-email/:email/:role')
-  getByEmailAndRole(
-    @Param('email') email: string,
-    @Param('role') role: USER_ROLES,
+  @Public()
+  @MessagePattern('get_user_by_email')
+  getUserByEmail(
+    @Payload() data: { email: string; role: USER_ROLES },
   ): Promise<AbstractUser | null> {
-    return this.usersService.getUserByEmailAndRole(email, role);
+    return this.usersService.getUserByEmailAndRole(data.email, data.role);
   }
 
   @Public()

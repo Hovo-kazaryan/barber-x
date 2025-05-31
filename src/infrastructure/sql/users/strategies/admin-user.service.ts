@@ -40,7 +40,15 @@ export class AdminSQLService implements IUserRepository {
     return null;
   }
 
-  getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
-    return null;
+  async getByEmail(email: string, role: USER_ROLES): Promise<AbstractUser> {
+    const admin = await this.adminRepo.findOne({ where: { email } });
+    if (!admin) {
+      throw new RpcException({
+        statusCode: 404,
+        message: ERROR_MESSAGES.NOT_FOUND,
+      });
+    }
+
+    return { ...admin, role };
   }
 }
