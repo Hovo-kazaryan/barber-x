@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "docker": "docker compose up -d",
     "phoenix": "npm run docker &&  npm run start:dev",
-    "exorcist": "docker compose down -v"
+    "exorcist": "docker compose down"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.0",
