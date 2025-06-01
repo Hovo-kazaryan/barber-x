@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 
-import { AdminSQL } from '../schemas/admin.orm';
+import { AdminSQL } from '../schemas/admin.orm.entity';
 import { USER_ROLES } from 'src/shared/constants';
 import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';

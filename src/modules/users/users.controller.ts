@@ -10,11 +10,6 @@ import { AbstractUser } from 'src/core/users/entities/user.abstract';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  getUsers(): string {
-    return 'Hello from user';
-  }
-
   @Public()
   @MessagePattern('get_user_by_email')
   getUserByEmail(

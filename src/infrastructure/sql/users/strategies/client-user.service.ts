@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { ClientSQL } from '../schemas/client.orm';
+import { ClientSQL } from '../schemas/client.orm.entity';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 import { RpcException } from '@nestjs/microservices';

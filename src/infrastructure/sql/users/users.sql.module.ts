@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserSQL } from './schemas/user.orm.entity';
 import { MasterSQL } from './schemas/master.orm.entity';
-import { AdminSQL } from './schemas/admin.orm';
-import { ClientSQL } from './schemas/client.orm';
+import { AdminSQL } from './schemas/admin.orm.entity';
+import { ClientSQL } from './schemas/client.orm.entity';
 
 import { SQLUserRepository } from './user.repository';
 import { USER_REPOSITORY_SQL } from 'src/shared/tokens';
