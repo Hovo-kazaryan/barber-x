@@ -10,6 +10,7 @@ import { JwtAuthGuard } from '../infrastructure/shared/auth/guards/jwt-auth.guar
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RoleModule } from 'src/modules/role/role.module';
+import { PlannerModule } from 'src/modules/planner/planner.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { RoleModule } from 'src/modules/role/role.module';
     UsersModule,
     AuthModule,
     RoleModule,
+    PlannerModule,
   ],
   controllers: [AppController],
   providers: [

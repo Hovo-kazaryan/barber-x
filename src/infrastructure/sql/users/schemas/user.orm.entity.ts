@@ -1,4 +1,3 @@
-import { USER_ROLES } from 'src/shared/constants';
 import {
   Column,
   Entity,

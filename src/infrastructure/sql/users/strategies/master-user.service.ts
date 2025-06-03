@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { HttpStatus, Inject } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 
@@ -9,6 +9,7 @@ import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 import { RolesRepository } from '../../roles/roles.repository';
+import { SQLPlannerRepository } from '../../planner/planner.repository';
 
 export class MasterSQLService implements IUserRepository {
   constructor(
@@ -16,6 +17,8 @@ export class MasterSQLService implements IUserRepository {
     private readonly masterRepo: Repository<MasterSQL>,
 
     private readonly roleRepository: RolesRepository,
+
+    private readonly plannerRepository: SQLPlannerRepository,
   ) {}
 
   async create(user: AbstractUser): Promise<AbstractUser> {
@@ -53,6 +56,19 @@ export class MasterSQLService implements IUserRepository {
     }
 
     const role = await this.roleRepository.getRoleById(email);
+
+    return { ...master, role: role.name };
+  }
+
+  async getById(_id: string): Promise<AbstractUser> {
+    const master = await this.masterRepo.findOne({ where: { _id } });
+    if (!master) {
+      throw new RpcException({
+        statusCode: 404,
+        message: ERROR_MESSAGES.NOT_FOUND,
+      });
+    }
+    const role = await this.roleRepository.getRoleById(master.email);
 
     return { ...master, role: role.name };
   }

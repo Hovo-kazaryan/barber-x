@@ -8,14 +8,17 @@ import { ClientSQL } from './schemas/client.orm.entity';
 
 import { SQLUserRepository } from './user.repository';
 import { USER_REPOSITORY_SQL } from 'src/shared/tokens';
+import { RolesSQLModule } from '../roles/roles.sql.module';
+import { PlannerSQLModule } from '../planner/planner.sql.module';
+
 import { SQLUserRoleFactory } from './strategies/role-factory';
 import { AdminSQLService } from './strategies/admin-user.service';
 import { ClientSQLService } from './strategies/client-user.service';
 import { MasterSQLService } from './strategies/master-user.service';
-import { RolesSQLModule } from '../roles/roles.sql.module';
 @Module({
   imports: [
     RolesSQLModule,
+    PlannerSQLModule,
     TypeOrmModule.forFeature([UserSQL, AdminSQL, MasterSQL, ClientSQL]),
   ],
   providers: [
@@ -29,6 +32,6 @@ import { RolesSQLModule } from '../roles/roles.sql.module';
     },
   ],
 
-  exports: [USER_REPOSITORY_SQL],
+  exports: [USER_REPOSITORY_SQL, MasterSQLService],
 })
 export class UserModuleSQL {}
