@@ -1,5 +1,5 @@
 export abstract class AbstractPlanner {
-  masterId: string;
+  master: string;
 
   // Days of the week the master always takes off (0 = Sunday, 6 = Saturday)
   recurringHolidays?: number[]; // e.g., [0, 6]

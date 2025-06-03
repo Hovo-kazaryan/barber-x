@@ -9,6 +9,7 @@ import { ERROR_MESSAGES } from 'src/shared/messages';
 import { AbstractUser } from 'src/core/users/entities/user.abstract';
 import { IUserRepository } from 'src/core/users/interfaces/user-repository.interface';
 import { RolesRepository } from '../../roles/roles.repository';
+import { PlannerSQLRepository } from '../../planners/planner.repository';
 
 export class MasterSQLService implements IUserRepository {
   constructor(
@@ -16,6 +17,7 @@ export class MasterSQLService implements IUserRepository {
     private readonly masterRepo: Repository<MasterSQL>,
 
     private readonly roleRepository: RolesRepository,
+    private readonly plannerRepository: PlannerSQLRepository,
   ) {}
 
   async create(user: AbstractUser): Promise<AbstractUser> {
@@ -35,7 +37,7 @@ export class MasterSQLService implements IUserRepository {
     const role = await this.roleRepository.getRoleByName(user.role);
     const master = this.masterRepo.create({ ...user, role });
     await this.masterRepo.save(master);
-
+    await this.plannerRepository.createRepo(master._id);
     return { ...master, role: role.name };
   }
 
@@ -55,5 +57,16 @@ export class MasterSQLService implements IUserRepository {
     const role = await this.roleRepository.getRoleById(email);
 
     return { ...master, role: role.name };
+  }
+
+  async getById(id: string) {
+    const master = await this.masterRepo.findOne({ where: { _id: id } });
+    if (!master) {
+      throw new RpcException({
+        statusCode: 404,
+        message: ERROR_MESSAGES.NOT_FOUND,
+      });
+    }
+    return master;
   }
 }

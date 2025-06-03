@@ -13,9 +13,11 @@ import { AdminSQLService } from './strategies/admin-user.service';
 import { ClientSQLService } from './strategies/client-user.service';
 import { MasterSQLService } from './strategies/master-user.service';
 import { RolesSQLModule } from '../roles/roles.sql.module';
+import { PlannerSQLModule } from '../planners/planner.sql.module';
 @Module({
   imports: [
     RolesSQLModule,
+    PlannerSQLModule,
     TypeOrmModule.forFeature([UserSQL, AdminSQL, MasterSQL, ClientSQL]),
   ],
   providers: [
