@@ -17,7 +17,7 @@ export class PlannerSQL {
   @PrimaryGeneratedColumn('uuid')
   _id: string;
 
-  @OneToOne(() => MasterSQL, { eager: true })
+  @OneToOne(() => MasterSQL, (master) => master.planner)
   @JoinColumn({ name: 'master' })
   master: MasterSQL;
 

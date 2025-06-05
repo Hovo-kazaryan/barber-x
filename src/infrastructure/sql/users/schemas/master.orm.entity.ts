@@ -10,7 +10,7 @@ export class MasterSQL extends UserSQL {
   @Column({ nullable: true })
   experienceYears?: number;
 
-  @OneToOne(() => PlannerSQL)
+  @OneToOne(() => PlannerSQL, (planner) => planner.master, { cascade: true })
   @JoinColumn({ name: 'planner' })
-  planner: PlannerSQL;
+  planner?: PlannerSQL;
 }

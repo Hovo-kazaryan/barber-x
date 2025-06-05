@@ -37,7 +37,10 @@ export class MasterSQLService implements IUserRepository {
     const role = await this.roleRepository.getRoleByName(user.role);
     const master = this.masterRepo.create({ ...user, role });
     await this.masterRepo.save(master);
-    await this.plannerRepository.createRepo(master._id);
+
+    const planner = await this.plannerRepository.createRepo(master._id);
+    master.planner = planner;
+    await this.masterRepo.save(master);
     return { ...master, role: role.name };
   }
 
