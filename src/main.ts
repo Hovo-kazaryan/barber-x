@@ -3,6 +3,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { UnprocessableEntityException, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app/app.module';
+import { RpcExceptionInterceptor } from './app/interceptors/rpc-exception.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -19,25 +20,26 @@ async function bootstrap() {
     },
   );
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      exceptionFactory: (errors) => {
-        const formattedErrors = {};
-        for (const error of errors) {
-          const field = error.property;
-          const constraints = error.constraints;
-          if (constraints) {
-            formattedErrors[field] = Object.values(constraints)[0]; // take the first error message
-          }
-        }
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     whitelist: true,
+  //     forbidNonWhitelisted: true,
+  //     transform: true,
+  //     exceptionFactory: (errors) => {
+  //       const formattedErrors = {};
+  //       for (const error of errors) {
+  //         const field = error.property;
+  //         const constraints = error.constraints;
+  //         if (constraints) {
+  //           formattedErrors[field] = Object.values(constraints)[0]; // take the first error message
+  //         }
+  //       }
 
-        return new UnprocessableEntityException(formattedErrors);
-      },
-    }),
-  );
+  //       return new UnprocessableEntityException(formattedErrors);
+  //     },
+  //   }),
+  // );
+  app.useGlobalInterceptors(new RpcExceptionInterceptor());
 
   app.enableShutdownHooks();
 

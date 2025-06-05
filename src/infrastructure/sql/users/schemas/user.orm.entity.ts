@@ -38,7 +38,7 @@ export class UserSQL {
   role: RoleSQL;
 
   @Column({
-    type: 'json',
+    type: 'simple-json',
     nullable: true,
   })
   bankCard?: {

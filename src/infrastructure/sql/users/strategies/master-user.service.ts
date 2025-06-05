@@ -1,5 +1,9 @@
 import { Repository } from 'typeorm';
-import { HttpStatus, Inject } from '@nestjs/common';
+import {
+  HttpStatus,
+  Inject,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
 
@@ -26,11 +30,8 @@ export class MasterSQLService implements IUserRepository {
     });
 
     if (isExists) {
-      throw new RpcException({
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        fields: {
-          email: ERROR_MESSAGES.EMAIL_IN_USE,
-        },
+      throw new UnprocessableEntityException({
+        fields: { email: ERROR_MESSAGES.EMAIL_IN_USE },
       });
     }
 

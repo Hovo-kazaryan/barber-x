@@ -15,24 +15,35 @@ export class PlannerSQLRepository {
   ) {}
 
   async createRepo(masterId: string) {
-    const master = await this.masterModel.findOne({ where: { _id: masterId } });
-    if (!master) {
-      throw new Error('Planner is not created for user ' + masterId);
-    }
-    const isExist = await this.plannerModel.findOne({ where: { master } });
-    if (isExist) {
-      console.warn('Planner is already created!');
-      return isExist;
-    }
+    try {
+      const master = await this.masterModel.findOne({
+        where: { _id: masterId },
+      });
+      if (!master) {
+        throw new Error('Planner is not created for user ' + masterId);
+      }
+      const isExist = await this.plannerModel.findOne({
+        where: { master: { _id: master._id } },
+      });
 
-    const planner = this.plannerModel.create({
-      recurringHolidays: [6, 7],
-      lunchBreak: { start: '09:00', end: '18:00' },
-      dayOffDates: [],
-      master: master,
-      weeklySchedule: [],
-    });
-    await this.plannerModel.save(planner);
-    return planner;
+      if (isExist) {
+        console.warn('Planner is already created!');
+        return isExist;
+      }
+
+      const planner = this.plannerModel.create({
+        master,
+        dayOffDates: [],
+        weeklySchedule: [],
+        recurringHolidays: [6, 7],
+        lunchBreak: { start: '09:00', end: '18:00' },
+      });
+      console.log('master', master);
+      await this.plannerModel.save(planner);
+      return planner;
+    } catch (error) {
+      console.log('error', error);
+      return null;
+    }
   }
 }
