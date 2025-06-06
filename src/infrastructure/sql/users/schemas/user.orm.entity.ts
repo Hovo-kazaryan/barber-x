@@ -30,6 +30,9 @@ export class UserSQL {
   @Column({ type: 'varchar', nullable: true })
   avatar?: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  password: string;
+
   @Column({ type: 'float', nullable: true })
   rating?: number;
 

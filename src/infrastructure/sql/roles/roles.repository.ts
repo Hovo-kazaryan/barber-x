@@ -1,6 +1,10 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
-import { HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 
 import { Repository } from 'typeorm';
 import { RoleSQL } from './schemas/roles.orm';
@@ -30,8 +34,7 @@ export class RolesRepository implements IRoleRepository {
   async createRole(data: CreateRoleDTO): Promise<RoleSQL> {
     const isExists = await this.getRoleByName(data.role);
     if (isExists) {
-      throw new RpcException({
-        statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      throw new UnprocessableEntityException({
         fields: {
           role: ERROR_MESSAGES.ROLE_IN_USE,
         },

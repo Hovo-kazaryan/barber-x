@@ -51,6 +51,7 @@ export class MasterSQLService implements IUserRepository {
 
   async getByEmail(email: string): Promise<AbstractUser> {
     const master = await this.masterRepo.findOne({ where: { email } });
+
     if (!master) {
       throw new RpcException({
         statusCode: 404,
@@ -58,9 +59,7 @@ export class MasterSQLService implements IUserRepository {
       });
     }
 
-    const role = await this.roleRepository.getRoleById(email);
-
-    return { ...master, role: role.name };
+    return { ...master, role: master.role.name };
   }
 
   async getById(id: string) {

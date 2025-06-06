@@ -38,11 +38,10 @@ export class PlannerSQLRepository {
         recurringHolidays: [6, 7],
         lunchBreak: { start: '09:00', end: '18:00' },
       });
-      console.log('master', master);
       await this.plannerModel.save(planner);
       return planner;
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
       return null;
     }
   }
